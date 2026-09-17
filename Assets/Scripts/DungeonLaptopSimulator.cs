@@ -1,18 +1,16 @@
 using UnityEngine;
-using UnityEngine.InputSystem; // Using New Input System package namespaces
+using UnityEngine.InputSystem; //new input System package namespaces
 
-/// <summary>
-/// A complete, zero-configuration laptop simulator for testing the VR Escape Dungeon game
-/// without needing a VR headset. Compatible with the New Input System package.
+///  laptop simulator for testing the VR Escape Dungeon game
+/// without needing headset. Compatible with New Input System.
 /// 
 /// CONTROLS:
-/// - Movement: [W, A, S, D] keys (exclusively for movement)
+/// - Movement: [W, A, S, D] keys ( movement)
 /// - Look Around:
-///     1. Arrow Keys: [Left / Right Arrow] to turn smoothly, [Up / Down Arrow] to look up/down
+///     1. Arrow Keys: [Left / Right Arrow] to turn, [Up / Down Arrow] to look up/down
 ///     2. Mouse: Hold [Right Mouse Button] + Move Mouse
-/// - Grab / Drop: Press [Left Click], [F], [G], or [E] when looking at the Torch or Key
-/// - Failsafe Protection: Absolute boundaries and safety floor clamp so player NEVER falls off the map
-/// </summary>
+/// - Grab / Drop: Press [Left Click], [F], [G], or [E] when looking at items
+/// - failsafe:  boundaries and safety so playernot  falls off the map
 public class DungeonLaptopSimulator : MonoBehaviour
 {
     [Header("Simulation Settings")]
@@ -27,10 +25,10 @@ public class DungeonLaptopSimulator : MonoBehaviour
     public float mouseLookSensitivity = 0.04f;
 
     [Tooltip("Turn speed in degrees per second when looking with Arrow Keys.")]
-    public float arrowKeyTurnSpeed = 80f;
+    public float arrowKeyTurnSpeed = 60f;
 
     [Tooltip("The maximum distance from which you can grab an item.")]
-    public float grabRange = 4.0f;
+    public float grabRange = 5.0f;
 
     [Header("Look Clamping (Look Restrictions)")]
     [Tooltip("How far down you can look. Prevents looking 'under' the player character.")]
@@ -57,7 +55,7 @@ public class DungeonLaptopSimulator : MonoBehaviour
     private float rotationY = 0f;
     private float verticalVelocity = 0f;
 
-    // Hard Boundary Limits calculated dynamically
+    // boundary limits calculated dynamically
     private bool useBoundaryLimits = false;
     private float minBoundX;
     private float maxBoundX;
@@ -76,7 +74,7 @@ public class DungeonLaptopSimulator : MonoBehaviour
 
     private void Start()
     {
-        // 1. Detect if VR is actually active and running on a headset
+        // 1. Detect if VR headset  active 
         if (UnityEngine.XR.XRSettings.isDeviceActive)
         {
             Debug.Log("[DungeonLaptopSimulator] VR Device is active. Laptop simulator disabled.");
@@ -126,9 +124,9 @@ public class DungeonLaptopSimulator : MonoBehaviour
         UpdateMazeBoundaries();
     }
 
-    /// <summary>
-    /// Resets the simulator look yaw to match a new teleport rotation.
-    /// </summary>
+    
+    /// Resets simulator look yaw to match a new teleport rotation.
+    
     public void SyncRotation(float targetYaw)
     {
         rotationY = targetYaw;
@@ -143,9 +141,9 @@ public class DungeonLaptopSimulator : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Calculates strict bounding limits based on the generated maze grid.
-    /// </summary>
+    
+    // Calculates  bounding limits based on generated maze grid.
+    
     private void UpdateMazeBoundaries()
     {
         var mazeGen = GameObject.FindAnyObjectByType<MazeGenerator>();

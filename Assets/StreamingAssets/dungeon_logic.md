@@ -1,6 +1,6 @@
-# Dungeon Logic Graph (Obsidian.md Design)
+# Dungeon Logic Graph (obsidian.md)
 
-This markdown graph represents the dungeon room connectivity and progression logic designed in Obsidian.md.
+ dungeon  connectivity and progression logic
 
 ## Room Connectivity Graph
 - [[StartRoom]] -> [[KeyChamber]]

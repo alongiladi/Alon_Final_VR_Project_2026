@@ -3,13 +3,12 @@ using System.IO;
 using System.Linq; // LINQ support with .Max()
 using UnityEngine;
 
-/// <summary>
-/// Generates a procedural dungeon escape sequence driven by:
-/// - External JSON configuration (dungeon_config.json)
-/// - Obsidian.md Logic Graph (dungeon_logic.md)
-/// - Interactive Fractal Trees in sanctuary chambers
+///  procedural enerating  dungeon  sequence based on
+/// - JSON configuration (dungeon_config.json)
+/// - Obsidian.md Logic graph (dungeon_logic.md)
+/// - interactive fractal trees in sanctuary chambers
 /// - LINQ Queries (.Max(), etc.)
-/// </summary>
+///
 public class MazeGenerator : MonoBehaviour
 {
     [Header("Maze Dimensions")]
@@ -68,13 +67,13 @@ public class MazeGenerator : MonoBehaviour
         GenerateMaze();
     }
 
-    /// <summary>
-    /// Loads external JSON configuration and Obsidian graph file.
-    /// Uses LINQ .Max() to compute layout parameters dynamically.
-    /// </summary>
+    
+    /// Loads external JSON config and obsdian graphfile.
+    /// LINQ .Max() for compute layout parameters dynamically.
+    
     public void LoadExternalConfigAndGraph()
     {
-        // 1. Load JSON Config
+        //  Load JSON config
         loadedConfig = DungeonConfigLoader.LoadConfig();
         if (loadedConfig != null)
         {
@@ -83,7 +82,7 @@ public class MazeGenerator : MonoBehaviour
             spawnCeilings = loadedConfig.enableCeilings;
         }
 
-        // 2. Load Obsidian Graph
+        // Load obsdian graph
         logicGraph = new ObsidianDungeonGraph();
         string graphPath = Path.Combine(Application.streamingAssetsPath, "dungeon_logic.md");
         if (File.Exists(graphPath))
@@ -101,14 +100,13 @@ public class MazeGenerator : MonoBehaviour
                 width = Mathf.Max(width, maxObsidianX + 1);
                 depth = Mathf.Max(depth, maxObsidianZ + 1);
 
-                Debug.Log($"[MazeGenerator] [LINQ .Max()] Configured Dungeon Bounds from Graph: MaxX={maxObsidianX}, MaxZ={maxObsidianZ}, MaxDifficulty={maxDifficulty}, MaxSpan={maxSpan:F2}");
+                Debug.Log($"[MazeGenerator] [LINQ .Max()] configured dungeon bounds from graph: MaxX={maxObsidianX}, MaxZ={maxObsidianZ}, MaxDifficulty={maxDifficulty}, MaxSpan={maxSpan:F2}");
             }
         }
     }
 
-    /// <summary>
-    /// Executes the full procedural dungeon maze layout.
-    /// </summary>
+    /// executes full procedural maze layout.
+
     public void GenerateMaze()
     {
         InitializeGrid();
