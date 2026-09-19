@@ -74,7 +74,7 @@ public class DungeonLaptopSimulator : MonoBehaviour
 
     private void Start()
     {
-        // 1. Detect if VR headset  active 
+        //detect if VR headset  active 
         if (UnityEngine.XR.XRSettings.isDeviceActive)
         {
             Debug.Log("[DungeonLaptopSimulator] VR Device is active. Laptop simulator disabled.");

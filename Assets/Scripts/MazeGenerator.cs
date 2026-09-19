@@ -8,7 +8,7 @@ using UnityEngine;
 /// - Obsidian.md Logic graph (dungeon_logic.md)
 /// - interactive fractal trees in sanctuary chambers
 /// - LINQ Queries (.Max(), etc.)
-///
+
 public class MazeGenerator : MonoBehaviour
 {
     [Header("Maze Dimensions")]
@@ -105,10 +105,36 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
-    /// executes full procedural maze layout.
+    /// <summary>
+    /// Clears any previously instantiated maze objects from the generator.
+    /// </summary>
+    [ContextMenu("Clear Generated Maze")]
+    public void ClearMaze()
+    {
+        var children = new System.Collections.Generic.List<GameObject>();
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            children.Add(transform.GetChild(i).gameObject);
+        }
 
+        foreach (var child in children)
+        {
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+                DestroyImmediate(child);
+            else
+                Destroy(child);
+#else
+            Destroy(child);
+#endif
+        }
+    }
+
+    /// executes full procedural maze layout.
+    [ContextMenu("Generate Maze")]
     public void GenerateMaze()
     {
+        ClearMaze();
         InitializeGrid();
         CarveLinearCompactPath();
         InstantiateDungeonMaze();
@@ -317,7 +343,7 @@ public class MazeGenerator : MonoBehaviour
         {
             Vector3 exitPos = new Vector3(exitCell.x * cellSize, 0f, exitCell.z * cellSize);
             Vector3 doorPos = exitPos + new Vector3(cellSize / 2f, 0f, 0f);
-            Quaternion doorRot = Quaternion.Euler(0, -90, 0);
+            Quaternion doorRot = Quaternion.identity;
 
             Instantiate(doorPrefab, doorPos, doorRot, mazeParent);
 

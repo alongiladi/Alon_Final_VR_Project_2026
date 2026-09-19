@@ -1,10 +1,10 @@
 using UnityEngine;
 
-/// <summary>
-/// Represents a single cell in the 3D maze grid.
+
+/// single cell in the 3D maze grid.
 /// Keeps track of its grid coordinates, visited state, relative path distance,
 /// and whether each of its four walls is currently active.
-/// </summary>
+
 [System.Serializable]
 public class MazeCell
 {
@@ -12,7 +12,7 @@ public class MazeCell
     public int x;
     public int z;
 
-    // BFS/DFS tracking states
+    // BFS/DFS visit tracking states
     public bool isVisited = false;
     public int distance = 0; // Distance from the start cell (0, 0)
 
@@ -22,9 +22,9 @@ public class MazeCell
     public bool eastWall = true;  // +X direction
     public bool westWall = true;  // -X direction
 
-    /// <summary>
+   
     /// Constructor to initialize a grid cell.
-    /// </summary>
+   
     public MazeCell(int x, int z)
     {
         this.x = x;

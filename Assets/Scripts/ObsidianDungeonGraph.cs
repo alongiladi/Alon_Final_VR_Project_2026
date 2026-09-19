@@ -4,14 +4,14 @@ using System.IO;
 using System.Linq; // Demonstrating LINQ support
 using UnityEngine;
 
-/// <summary>
-/// Node representation in the Obsidian-designed dungeon logic graph.
-/// </summary>
+
+/// Node representation in the Obsidian dungeon logic graph.
+
 [System.Serializable]
 public class DungeonGraphNode
 {
     public string id;
-    public string nodeType; // e.g. Spawn, KeyAltar, FractalGarden, ExitGate
+    public string nodeType; // spawn, keyAltar, fractalGarden, exitGate
     public int gridX;
     public int gridZ;
     public int difficulty;
@@ -24,17 +24,15 @@ public class DungeonGraphNode
     }
 }
 
-/// <summary>
-/// Parses dungeon logic graphs designed in Obsidian.md markdown files
-/// and applies procedural generation using graph traversal and LINQ queries.
-/// </summary>
+
+//creating a dictionary for all nodes in graph
+
 public class ObsidianDungeonGraph
 {
     public Dictionary<string, DungeonGraphNode> nodes = new Dictionary<string, DungeonGraphNode>();
 
-    /// <summary>
-    /// Loads and parses an Obsidian markdown graph file.
-    /// </summary>
+  
+    ///func to loads+  parse  Obsidian.md (if exists),also clean up file string content
     public bool LoadFromMarkdown(string filePath)
     {
         if (!File.Exists(filePath))
@@ -51,12 +49,13 @@ public class ObsidianDungeonGraph
             string line = rawLine.Trim();
             if (string.IsNullOrEmpty(line) || line.StartsWith("#")) continue;
 
-            // Parse connections: - [[NodeA]] -> [[NodeB]]
+    //recognizes all symbols (arrows for neighbors, brackets for node ids, colons for attributes etc) 
+
             if (line.Contains("->"))
             {
                 ParseEdgeLine(line);
             }
-            // Parse node attributes: - [[NodeA]]: Type=Spawn, GridX=0, GridZ=0, Difficulty=1
+         
             else if (line.Contains(":") && line.Contains("[["))
             {
                 ParseNodeAttributes(line);
@@ -67,6 +66,8 @@ public class ObsidianDungeonGraph
         return true;
     }
 
+
+//identifying connections between nodes + creating them in graph dictionary
     private void ParseEdgeLine(string line)
     {
         string[] parts = line.Replace("-", "").Split(new[] { "->" }, StringSplitOptions.RemoveEmptyEntries);
@@ -84,7 +85,7 @@ public class ObsidianDungeonGraph
             }
         }
     }
-
+//parsing all attributes for each node
     private void ParseNodeAttributes(string line)
     {
         int colonIdx = line.IndexOf(':');
@@ -95,7 +96,7 @@ public class ObsidianDungeonGraph
 
         string nodeId = ExtractNodeId(nodePart);
         var node = GetOrCreateNode(nodeId);
-
+     
         string[] keyValues = attrPart.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
         foreach (var kv in keyValues)
         {
@@ -120,6 +121,7 @@ public class ObsidianDungeonGraph
         return clean;
     }
 
+//in case we come across a node id that we don't have yet in the dict, we create a new node with that id s the code won't crash
     public DungeonGraphNode GetOrCreateNode(string id)
     {
         if (!nodes.ContainsKey(id))
@@ -129,9 +131,9 @@ public class ObsidianDungeonGraph
         return nodes[id];
     }
 
-    /// <summary>
-    /// Demonstrates LINQ .Max() usage to find the maximum grid span and difficulty in the dungeon graph.
-    /// </summary>
+ 
+    /// LINQ queries -max difficult, max gridX, max gridZ, max straight line distance in the maze etc
+    
     public int GetMaxDifficulty()
     {
         if (nodes.Count == 0) return 0;

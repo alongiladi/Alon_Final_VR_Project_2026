@@ -2,11 +2,10 @@ using System;
 using System.IO;
 using UnityEngine;
 
-/// <summary>
-/// Serializable data container for external JSON configuration.
-/// Can be customized externally via StreamingAssets/dungeon_config.json without recompilation.
-/// </summary>
-[System.Serializable]
+
+/// loading all the config info
+/// if the external file dungeon_config.json  exists we use it (we can edit it without recompiling the c# code), if not we use the backup default values in the class we created here (like a safety net)
+
 public class DungeonConfigData
 {
     public string dungeonName = "Obsidian Fractal Labyrinth";

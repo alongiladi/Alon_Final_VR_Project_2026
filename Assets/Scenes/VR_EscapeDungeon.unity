@@ -5689,6 +5689,7 @@ GameObject:
   m_Component:
   - component: {fileID: 973523153}
   - component: {fileID: 973523152}
+  - component: {fileID: 973523154}
   m_Layer: 0
   m_Name: VictoryLight
   m_TagString: Untagged
@@ -5776,6 +5777,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1968683286}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &973523154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 973523151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1001 &1003948866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6443,6 +6473,8 @@ MonoBehaviour:
   keyPrefab: {fileID: 5205978476898722631, guid: ca5f50743da3c7f4696a81297cdafe1c, type: 3}
   keyTablePrefab: {fileID: 8053930245522201688, guid: 560ffca76fc179f408fcab1b53c866b9, type: 3}
   doorPrefab: {fileID: 1679494692213327061, guid: 06c851404c5abe44b9e613bada63fc45, type: 3}
+  fractalTreePrefab: {fileID: 0}
+  spawnFractalTree: 1
   wallHeightOffset: 0
   ceilingHeight: 5.8
   keyHeightOffset: 0.88
