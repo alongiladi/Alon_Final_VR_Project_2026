@@ -1,0 +1,25 @@
+
+{
+  "dungeonName": "Obsidian Fractal Labyrinth",
+  "version": "1.0.0",
+  "gridWidth": 3,
+  "gridDepth": 3,
+  "cellSize": 5.86,
+  "ceilingHeight": 5.8,
+  "enableCeilings": true,
+  "playerMoveSpeed": 3.5,
+  "fractalTree": {
+    "recursionDepth": 4,
+    "branchLength": 1.5,
+    "branchLengthFactor": 0.72,
+    "branchRadius": 0.12,
+    "splitAngle": 35.0,
+    "leavesEnabled": true,
+    "growthSpeed": 2.5
+  },
+  "lighting": {
+    "torchFlickerSpeed": 8.0,
+    "minTorchIntensity": 1.8,
+    "maxTorchIntensity": 3.2
+  }
+}
