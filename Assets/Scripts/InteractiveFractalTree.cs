@@ -54,13 +54,13 @@ public class InteractiveFractalTree : MonoBehaviour
 
     private void Update()
     {
-        // Detect parameter changes and rebuild
+        // if some of the parameters changes from last frame were rebuilding the tree 
         if (recursionDepth != lastDepth || Mathf.Abs(branchAngle - lastAngle) > 0.01f || Mathf.Abs(baseBranchLength - lastLength) > 0.01f)
         {
             BuildFractalTree();
         }
 
-        // Gentle procedural wind sway
+        //  wind sway
         if (animateGrowth && treeContainer != null)
         {
             float sway = Mathf.Sin(Time.time * swaySpeed) * swayAmount;
@@ -68,9 +68,9 @@ public class InteractiveFractalTree : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Re-generates the procedural fractal tree mesh hierarchy.
-    /// </summary>
+
+ 
+
     public void BuildFractalTree()
     {
         lastDepth = recursionDepth;
@@ -179,10 +179,9 @@ public class InteractiveFractalTree : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Interactive methods to change the fractal tree properties dynamically at runtime
-    /// </summary>
-    public void IncreaseDepth()
+    
+    /// interactive methods to change  tree properties durin runtie
+        public void IncreaseDepth()
     {
         if (recursionDepth < 6)
         {
