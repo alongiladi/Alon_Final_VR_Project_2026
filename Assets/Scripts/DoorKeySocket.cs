@@ -174,6 +174,13 @@ public class DoorKeySocket : MonoBehaviour
                 rb.angularVelocity = Vector3.zero;
             }
 
+            // Ensure colliders on the key are active so it remains visible and tangible in socket
+            var cols = keyInstance.GetComponentsInChildren<Collider>();
+            foreach (var c in cols)
+            {
+                c.enabled = true;
+            }
+
             // 2. Disable XR Interaction so the player is forced to release it
             var grabInteractable = keyInstance.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
             if (grabInteractable != null)

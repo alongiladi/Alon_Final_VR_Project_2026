@@ -421,19 +421,32 @@ public class DungeonLaptopSimulator : MonoBehaviour
     }
 
     /// <summary>
-    /// Casts a SphereCast from the camera center to comfortably grab items.
-    /// Distinguishes between Torches (Left Hand) and Keys (Right Hand).
+    /// Casts a ray/spherecast from the camera center to grab items.
+    /// Filters out already held items so the player can effortlessly grab and dual-wield both Torch and Key!
     /// </summary>
     private void TryGrabObject()
     {
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        RaycastHit hit;
 
-        if (Physics.SphereCast(ray, 0.45f, out hit, grabRange) || Physics.Raycast(ray, out hit, grabRange))
+        // Use RaycastAll and SphereCastAll so already-held objects (or near colliders) do not block picking up other items!
+        RaycastHit[] hits = Physics.SphereCastAll(ray, 0.35f, grabRange);
+        if (hits == null || hits.Length == 0)
+        {
+            hits = Physics.RaycastAll(ray, grabRange);
+        }
+
+        // Sort hits by distance
+        System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+        foreach (var hit in hits)
         {
             GameObject hitObj = hit.collider.gameObject;
+
+            // Ignore player character controller or camera
+            if (hitObj == gameObject || hitObj == playerCamera.gameObject) continue;
+
+            // Find root interactable object
             var grabComponent = hitObj.GetComponent("XRGrabInteractable");
-            
             if (grabComponent == null && hitObj.transform.parent != null)
             {
                 hitObj = hitObj.transform.parent.gameObject;
@@ -442,21 +455,39 @@ public class DungeonLaptopSimulator : MonoBehaviour
 
             if (grabComponent != null)
             {
+                // CRUCIAL: Ignore objects that are ALREADY in the player's hands!
+                if (hitObj == heldTorch || hitObj == heldKey) continue;
+                if (hitObj.transform.IsChildOf(playerCamera.transform)) continue;
+
                 bool isTorch = hitObj.name.ToLower().Contains("torch");
                 bool isKey = hitObj.name.ToLower().Contains("key") || hitObj.CompareTag("Key");
 
                 if (isTorch)
                 {
                     GrabTorch(hitObj);
+                    return;
                 }
                 else if (isKey)
                 {
                     GrabKey(hitObj);
+                    return;
                 }
                 else
                 {
-                    // Generic grab into right hand
-                    GrabKey(hitObj);
+                    // Generic grab into whichever hand slot is free (prefer Key hand if free)
+                    if (heldKey == null)
+                    {
+                        GrabKey(hitObj);
+                    }
+                    else if (heldTorch == null)
+                    {
+                        GrabTorch(hitObj);
+                    }
+                    else
+                    {
+                        GrabKey(hitObj);
+                    }
+                    return;
                 }
             }
         }
@@ -471,6 +502,13 @@ public class DungeonLaptopSimulator : MonoBehaviour
 
         heldTorch = torchObj;
         torchOriginalParent = heldTorch.transform.parent;
+
+        // Temporarily disable collider on held item so it doesn't collide with the player, held key, or raycasts
+        var colliders = heldTorch.GetComponentsInChildren<Collider>();
+        foreach (var col in colliders)
+        {
+            col.enabled = false;
+        }
 
         torchRigidbody = heldTorch.GetComponent<Rigidbody>();
         if (torchRigidbody != null)
@@ -498,6 +536,13 @@ public class DungeonLaptopSimulator : MonoBehaviour
         heldKey = keyObj;
         keyOriginalParent = heldKey.transform.parent;
 
+        // Temporarily disable collider on held item so it doesn't collide with the player, held torch, or raycasts
+        var colliders = heldKey.GetComponentsInChildren<Collider>();
+        foreach (var col in colliders)
+        {
+            col.enabled = false;
+        }
+
         keyRigidbody = heldKey.GetComponent<Rigidbody>();
         if (keyRigidbody != null)
         {
@@ -518,6 +563,13 @@ public class DungeonLaptopSimulator : MonoBehaviour
     {
         if (heldTorch == null) return;
 
+        // Re-enable colliders when dropped
+        var colliders = heldTorch.GetComponentsInChildren<Collider>();
+        foreach (var col in colliders)
+        {
+            col.enabled = true;
+        }
+
         heldTorch.transform.SetParent(torchOriginalParent);
         if (torchRigidbody != null)
         {
@@ -535,6 +587,13 @@ public class DungeonLaptopSimulator : MonoBehaviour
     private void DropKey()
     {
         if (heldKey == null) return;
+
+        // Re-enable colliders when dropped
+        var colliders = heldKey.GetComponentsInChildren<Collider>();
+        foreach (var col in colliders)
+        {
+            col.enabled = true;
+        }
 
         heldKey.transform.SetParent(keyOriginalParent);
         if (keyRigidbody != null)

@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Generates a procedural 3D fractal tree with interactive runtime modification capabilities.
-/// Supports modifying recursion depth, branch angles, branch lengths, and foliage dynamically.
-/// </summary>
+///  procedural generateion  fractal tree withability to modify during game .
+
+
 [ExecuteAlways]
 public class InteractiveFractalTree : MonoBehaviour
 {
